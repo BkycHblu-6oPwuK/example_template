@@ -1,0 +1,61 @@
+{
+  "_config-DUnrSzio.js": {
+    "file": "config-DUnrSzio.js",
+    "name": "config"
+  },
+  "src/assets/images/11.png": {
+    "file": "11-DXO8KPHT.png",
+    "src": "src/assets/images/11.png"
+  },
+  "src/common/js/bundle.js": {
+    "file": "bundle-DVYS_3ut.js",
+    "name": "bundle",
+    "src": "src/common/js/bundle.js",
+    "isEntry": true,
+    "imports": [
+      "src/common/js/header.js",
+      "src/common/js/main.js",
+      "src/common/js/footer.js",
+      "_config-DUnrSzio.js"
+    ]
+  },
+  "src/common/js/footer.js": {
+    "file": "footer-BXn_tINt.js",
+    "name": "footer",
+    "src": "src/common/js/footer.js",
+    "isEntry": true,
+    "imports": [
+      "_config-DUnrSzio.js"
+    ],
+    "css": [
+      "footer-8TDNvigv.css"
+    ]
+  },
+  "src/common/js/header.js": {
+    "file": "header-CeBtqjmZ.js",
+    "name": "header",
+    "src": "src/common/js/header.js",
+    "isEntry": true,
+    "imports": [
+      "_config-DUnrSzio.js"
+    ],
+    "css": [
+      "header-Bvlt6up8.css"
+    ]
+  },
+  "src/common/js/main.js": {
+    "file": "main-D4mk3pq2.js",
+    "name": "main",
+    "src": "src/common/js/main.js",
+    "isEntry": true,
+    "imports": [
+      "_config-DUnrSzio.js"
+    ],
+    "css": [
+      "main-BB9MPp7s.css"
+    ],
+    "assets": [
+      "11-DXO8KPHT.png"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "exapmle/app",
+  "description": "example",
+  "extra": {
+    "bitrix-dir": "bitrix"
+  },
+  "require": {
+    "vlucas/phpdotenv": "*"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true
+    }
+  }
+}
