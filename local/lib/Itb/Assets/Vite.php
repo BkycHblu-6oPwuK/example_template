@@ -116,7 +116,6 @@ class Vite
      *
      * @return void
      */
-
     public function includeAssets(array $entries) : void
     {
         $assets = $this->getAssetPaths($entries);
