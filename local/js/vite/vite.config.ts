@@ -1,12 +1,12 @@
 import { defineConfig } from 'vite'
 
-// import vue from '@vitejs/plugin-vue';
-// import VueMacros from "unplugin-vue-macros/vite";
+import vue from '@vitejs/plugin-vue';
+import VueMacros from "unplugin-vue-macros/vite";
 
 import dotenv from 'dotenv';
 import path from 'path';
 
-const envPath = path.resolve(__dirname, '../../../local/php_interface/include/.env'); // путь до .env относительно текущей директории p.s. переменно MODE значение production в js файле установится автоматически после билда
+const envPath = path.resolve(__dirname, '../../../local/php_interface/include/.env'); // путь до .env относительно текущей директории p.s. MODE и значение production в js файле так же установится автоматически
 const result = dotenv.config({ path: envPath });
 
 if (result.error) {
@@ -16,13 +16,13 @@ if (result.error) {
 const env = process.env;
 
 export default defineConfig({
-    // plugins: [
-    //     VueMacros({
-    //         plugins: {
-    //             vue: vue(),
-    //         },
-    //     }),
-    // ],
+    plugins: [
+        VueMacros({
+            plugins: {
+                vue: vue(),
+            },
+        }),
+    ],
     //define: {
     //    'process.env': env // можно передать переменные в клиентский код
     //},
@@ -34,10 +34,11 @@ export default defineConfig({
         manifest: true,
         rollupOptions: {
             input: {
-                bundle: 'src/common/js/bundle.js',
-                header: 'src/common/js/header.js',
-                main: 'src/common/js/main.js',
-                footer: 'src/common/js/footer.js'
+                bundle: 'src/common/js/bundle.ts',
+                header: 'src/common/js/header.ts',
+                main: 'src/common/js/main.ts',
+                footer: 'src/common/js/footer.ts',
+                app: 'src/app/index.ts'
             },
             // output: { // названия без хешей, с использованием класса Itb\Assets\Vite можно забыть про названия файлов.
             //     entryFileNames: `[name].js`,

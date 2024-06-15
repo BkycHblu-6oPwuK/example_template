@@ -1,55 +1,61 @@
 {
-  "_config-DUnrSzio.js": {
-    "file": "config-DUnrSzio.js",
+  "_config-Db44XnLR.js": {
+    "file": "config-Db44XnLR.js",
     "name": "config"
+  },
+  "src/app/index.ts": {
+    "file": "app-CYN26bW8.js",
+    "name": "app",
+    "src": "src/app/index.ts",
+    "isEntry": true
   },
   "src/assets/images/11.png": {
     "file": "11-DXO8KPHT.png",
     "src": "src/assets/images/11.png"
   },
-  "src/common/js/bundle.js": {
-    "file": "bundle-DVYS_3ut.js",
+  "src/common/js/bundle.ts": {
+    "file": "bundle-BZjHFqv0.js",
     "name": "bundle",
-    "src": "src/common/js/bundle.js",
+    "src": "src/common/js/bundle.ts",
     "isEntry": true,
     "imports": [
-      "src/common/js/header.js",
-      "src/common/js/main.js",
-      "src/common/js/footer.js",
-      "_config-DUnrSzio.js"
+      "src/common/js/header.ts",
+      "src/common/js/main.ts",
+      "src/common/js/footer.ts",
+      "_config-Db44XnLR.js"
     ]
   },
-  "src/common/js/footer.js": {
-    "file": "footer-BXn_tINt.js",
+  "src/common/js/footer.ts": {
+    "file": "footer-zD9tjKIG.js",
     "name": "footer",
-    "src": "src/common/js/footer.js",
+    "src": "src/common/js/footer.ts",
     "isEntry": true,
     "imports": [
-      "_config-DUnrSzio.js"
+      "_config-Db44XnLR.js"
     ],
     "css": [
       "footer-8TDNvigv.css"
     ]
   },
-  "src/common/js/header.js": {
-    "file": "header-CeBtqjmZ.js",
+  "src/common/js/header.ts": {
+    "file": "header-TsHAlWRr.js",
     "name": "header",
-    "src": "src/common/js/header.js",
+    "src": "src/common/js/header.ts",
     "isEntry": true,
     "imports": [
-      "_config-DUnrSzio.js"
+      "_config-Db44XnLR.js"
     ],
     "css": [
       "header-Bvlt6up8.css"
     ]
   },
-  "src/common/js/main.js": {
-    "file": "main-D4mk3pq2.js",
+  "src/common/js/main.ts": {
+    "file": "main-DQIBIpwl.js",
     "name": "main",
-    "src": "src/common/js/main.js",
+    "src": "src/common/js/main.ts",
     "isEntry": true,
     "imports": [
-      "_config-DUnrSzio.js"
+      "_config-Db44XnLR.js"
     ],
     "css": [
       "main-BB9MPp7s.css"
