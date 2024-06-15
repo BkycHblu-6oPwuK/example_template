@@ -28,13 +28,11 @@ VITE_BASE_PATH определяет путь до папки dist. Если ис
 
 Для удобного подключения js и css был разработан класс Itb\Assets\Vite который подключит css и js файлы как в режиме разработки и на боевом сервере
 
+Конструктор приватный, объект получаем через статический метод getInstance так же передавая параметры
+
 Пример использования в header.php:
 
-$basePath = getenv('VITE_BASE_PATH');
-
-$manifestPath = $_SERVER['DOCUMENT_ROOT'] . $basePath . '.vite/manifest.json';
-
-$vite = new Vite($basePath,$manifestPath, IS_PRODUCTION, getenv('VITE_PORT'));
+$vite = Vite::getInstance(getenv('VITE_BASE_PATH'), MANIFEST_PATH, IS_PRODUCTION, getenv('VITE_PORT'));
 
 $vite->includeAssets([
 	'src/common/js/bundle.js',
