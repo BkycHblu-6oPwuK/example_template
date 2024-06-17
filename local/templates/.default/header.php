@@ -1,7 +1,7 @@
 <?
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 use Itb\Assets\Vite;
-$vite = Vite::getInstance(getenv('VITE_BASE_PATH'), MANIFEST_PATH, IS_PRODUCTION, getenv('VITE_PORT'));
+$vite = Vite::getInstance();
 ?>
 <!DOCTYPE html>
 <html>

@@ -3,6 +3,7 @@
 namespace Itb\Assets;
 
 use Bitrix\Main\Page\Asset;
+use InvalidArgumentException;
 
 /**
  * Класс для подключения js и css из vite. В vite.config должен быть manifest: true
@@ -18,42 +19,45 @@ class Vite
     private static $instance;
 
     private function __construct(){}
+    private function __clone(){}
+    private function __wakeup(){}
 
     /**
      * инициализация параметров необходимых для работы класса
      */
-    private function initialize($basePath, $manifestPath, $isProduction, $vitePort)
+    private function initialize()
     {
-        $this->basePath = $basePath;
-        $this->manifestPath = $manifestPath;
-        $this->isProduction = $isProduction;
-        if ($isProduction) {
+        $this->basePath = $this->getEnvVar('VITE_BASE_PATH');
+        $this->isProduction = $this->getEnvVar('MODE') === 'production';
+        $this->manifestPath = $_SERVER['DOCUMENT_ROOT'] . $this->basePath . '.vite/manifest.json';
+    
+        if ($this->isProduction) {
             $this->loadManifest();
         } else {
-            $this->localhostBasePath = "http://localhost:{$vitePort}{$basePath}";
+            $vitePort = $this->getEnvVar('VITE_PORT');
+            $this->localhostBasePath = "http://localhost:{$vitePort}{$this->basePath}";
         }
     }
 
+    protected function getEnvVar($varName)
+    {
+        $value = getenv($varName);
+        if ($value === false) {
+            throw new InvalidArgumentException("Environment variable '{$varName}' is not set or is empty.");
+        }
+        return $value;
+    }
+    
+
     /**
-     * Получает объект класса и меняет параметры если переданные были изменены
-     * @param string $basePath определяем в .env - VITE_BASE_PATH
-     * @param string $manifestPath $_SERVER['DOCUMENT_ROOT'] . $basePath . '.vite/manifest.json';
-     * @param bool $isProduction определяем в .env - MODE и передаем getenv('MODE') === 'production';
-     * @param int $vitePort определяем в .env - VITE_PORT, нужен только для подключения в режиме разработки;
+     * Возвращает объект класса
+     * @return static
      */
-    public static function getInstance(string $basePath, string $manifestPath, bool $isProduction, int $vitePort = 5173)
+    public static function getInstance()
     {
         if (static::$instance === null) {
             static::$instance = new static();
-            static::$instance->initialize($basePath, $manifestPath, $isProduction, $vitePort);
-        } else {
-            if (
-                static::$instance->basePath !== $basePath ||
-                static::$instance->manifestPath !== $manifestPath ||
-                static::$instance->isProduction !== $isProduction
-            ) {
-                static::$instance->initialize($basePath, $manifestPath, $isProduction, $vitePort);
-            }
+            static::$instance->initialize();
         }
         return static::$instance;
     }
