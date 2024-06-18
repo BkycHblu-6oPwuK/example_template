@@ -123,7 +123,10 @@ class Vite
             foreach ($entries as $entry) {
                 if (isset($this->manifest[$entry])) {
                     $asset = $this->manifest[$entry];
-                    $assets['js'][] = $this->basePath . $asset['file'];
+                    $assets['js'][] = [
+                        'file' => $this->basePath . $asset['file'],
+                        'issetImports' => isset($asset['imports'])
+                    ];
                     $this->collectCssImports($entry, $assets['css']);
                 }
             }
@@ -141,7 +144,7 @@ class Vite
     }
 
     /**
-     * Подключает js type module через Asset::addString и css через Asset::addCss. Для prod среды js и css. Для dev только js, css импортируем в js
+     * Подключает js через Asset::addJs, js type module через Asset::addString если есть импорты, и css через Asset::addCss. Для prod среды js и css. Для dev только js, css импортируем в js
      *
      * @param string[] $entries относительно директории в которой расположен vite
      *
@@ -151,9 +154,13 @@ class Vite
     {
         $assets = $this->getAssetPaths($entries);
         $bitrixAssetObj = Asset::getInstance();
-        foreach ($assets['js'] as $jsFile) {
-            $jsFile = htmlspecialchars($jsFile, ENT_QUOTES);
-            $bitrixAssetObj->addString("<script type='module' src='{$jsFile}'></script>");
+        foreach ($assets['js'] as $jsInfo) {
+            $jsFile = htmlspecialchars($jsInfo['file'], ENT_QUOTES);
+            if($jsInfo['issetImports']){
+                $bitrixAssetObj->addString("<script type='module' src='{$jsFile}'></script>");
+            } else {
+                $bitrixAssetObj->addJs($jsFile);
+            }
         }
         if ($this->isProduction && !empty($assets['css'])) {
             foreach ($assets['css'] as $cssFile) {
