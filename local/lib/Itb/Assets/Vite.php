@@ -132,11 +132,11 @@ class Vite
             }
         } else {
             if(!$this->viteClientIsIncluded){
-                $assets['js'][] = $this->localhostBasePath . '@vite/client';
+                $assets['js'][]['file'] = $this->localhostBasePath . '@vite/client';
                 $this->viteClientIsIncluded = true;
             }
             foreach ($entries as $entry) {
-                $assets['js'][] = $this->localhostBasePath . $entry;
+                $assets['js'][]['file'] = $this->localhostBasePath . $entry;
             }
         }
 
@@ -156,7 +156,7 @@ class Vite
         $bitrixAssetObj = Asset::getInstance();
         foreach ($assets['js'] as $jsInfo) {
             $jsFile = htmlspecialchars($jsInfo['file'], ENT_QUOTES);
-            if($jsInfo['issetImports']){
+            if($jsInfo['issetImports'] || !$this->isProduction){
                 $bitrixAssetObj->addString("<script type='module' src='{$jsFile}'></script>");
             } else {
                 $bitrixAssetObj->addJs($jsFile);
