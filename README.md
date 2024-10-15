@@ -2,6 +2,12 @@
 
 версия node 20.7.0
 
+## Базовые классы
+
+```
+https://git.itb-dev.ru/ITB-dev/itb.core
+```
+
 ## Установка
 1. Выполнить composer install в корне проекта
 2. npm install в /local/js/vite/ (VITE_BASE_PATH).
