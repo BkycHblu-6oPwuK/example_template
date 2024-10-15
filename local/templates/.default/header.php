@@ -1,6 +1,6 @@
 <?
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
-use Itb\Assets\Vite;
+use Itb\Core\Assets\Vite;
 $vite = Vite::getInstance();
 ?>
 <!DOCTYPE html>

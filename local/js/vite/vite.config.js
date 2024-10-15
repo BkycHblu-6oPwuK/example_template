@@ -39,7 +39,7 @@ export default defineConfig({
                 main: 'src/common/js/main.js',
                 footer: 'src/common/js/footer.js'
             },
-            // output: { // названия без хешей, с использованием класса Itb\Assets\Vite можно забыть про названия файлов.
+            // output: { // названия без хешей, с использованием класса Itb\Core\Assets\Vite можно забыть про названия файлов.
             //     entryFileNames: `[name].js`,
             //     chunkFileNames: `[name].js`,
             //     assetFileNames: `[name].[ext]`
