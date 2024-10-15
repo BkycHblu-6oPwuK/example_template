@@ -4,9 +4,7 @@
 
 ## Базовые классы и класс Vite
 
-```
 https://git.itb-dev.ru/ITB-dev/itb.core
-```
 
 ## Установка
 1. Выполнить composer install в корне проекта
