@@ -22,6 +22,8 @@ https://git.itb-dev.ru/ITB-dev/itb.core
 По умолчанию в package.json в зависимостях указаны библиотеки - swiper, axios, vue, vuex, vueuse, sass, dotenv и плагины для vue.
 Дальше можете использовать их делая импорты в js файлах
 
+Так же в package.json необходимо заменить версии с '*' на те версии которые были установлены
+
 ## Vue
 Для использования vue должен быть раскомментирован плагин vue в vite.config.js
 
