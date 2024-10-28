@@ -4,8 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "cross-env MODE=production vite build"
+    "dev": "vite --config vite.config.client.js",
+    "build": "cross-env MODE=production npm run build:client && npm run build:server",
+    "build:client": "vite build --config vite.config.client.js",
+    "build:server": "vite build --config vite.config.server.js",
+    "ssr-server": "node server"
   },
   "dependencies": {
     "@vueuse/core": "*",
@@ -13,7 +16,10 @@
     "axios": "*",
     "dotenv": "*",
     "vue": "*",
-    "vuex": "*"
+    "vuex": "*",
+    "compression": "*",
+    "express": "*",
+    "sirv": "*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "*",

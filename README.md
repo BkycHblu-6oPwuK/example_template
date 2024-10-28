@@ -1,50 +1,37 @@
-сборка docker с node - https://github.com/BkycHblu-6oPwuK/compose
+## Версия для vue ssr
 
-## Варианты сборки
+Когда делаете build на продакшен, убедитесь что занесли файл в build.rollupOptions.input в vite.config.client.js для клиентского кода и в vite.config.server.js для серверных страниц
 
-1. Текущая ветка - базовая сборка для js/scss без ssr, для работы vue раскомментировать соответствующие строки в vite.config.js
-2. ветка typescript_version - базовая сборка, но вместо js используется typescript, vue уже раскомментирован
-3. ветка ssr_version - базовая сборка для vue ssr
+метод для получения html с node ssr ```getSsrContent```, параметром передается страница которая должа быть получена название страницы соответствует ключу из build.rollupOptions.input файла vite.config.server.js
 
-выбирая 2 или 3 вариант, с основной ветки нужно скопировать все файлы в проект. А local/js/vite заменить из соответствующей ветки.
-
-## Базовые классы и класс Vite
-
-https://git.itb-dev.ru/ITB-dev/itb.core
-
-## Установка
-Перенести файлы в проект. Изменить название файла env.example на .env (файл лежит в директории local/php/interface/include)
-
-1. Выполнить composer install в корне проекта
-2. npm install в local/js/vite (VITE_BASE_PATH).
-
-По умолчанию в package.json в зависимостях указаны библиотеки - swiper, axios, vue, vuex, vueuse, sass, dotenv и плагины для vue.
-Дальше можете использовать их делая импорты в js файлах
-
-## Vue
-Для использования vue должен быть раскомментирован плагин vue в vite.config.js
-
-## Разработка
-- Когда делаете build на продакшен, убедитесь что занесли файл в build.rollupOptions.input в vite.config.js, css туда не нужно вносить, его импортируйте в js файл.
-- Локально работаете с включенным сервером разработки - npm run dev
-- По умолчанию размещаем в local/js/vite. При необходимости можно изменить расположение, так же изменив путь в файле .env
-- VITE_BASE_PATH определяет путь до папки dist. Если используете докер, то соответствующие изменения пути нужно внести и там (определяем до директории с package.json)
-- в public можно размещать общие ассеты которые будуте подключать в php файлах, например картинку подключить из php файла - "div class="img" img src="/local/js/vite/public/images/11.png" /div". Но не обязательно хранить такие ассеты в директории public можете выносить куда угодно.
-- если работаете с ассетами в директории src, то там используется модульность, ассеты размещаете в директории assets и имортируете нужные ассеты в нужный файл. Например в main scss - background-image: url(@/assets/images/11.png);
-(не забывайте что импорт картинок так же работает и в js/vue файлах). И тоже самое с шрифтами и прочим.
-Эта картинка при билде на продакшен будет помещена в папку dist и сборщик сам установит нужный путь до файла в конечном css файле.
-
-## Класс Vite в php
-- Для удобного подключения js и css был разработан класс Itb\Core\Assets\Vite который подключит css и js файлы как в режиме разработки и на боевом сервере
-- Конструктор приватный, объект получаем через статический метод getInstance
-- для работы класса обязательно должны быть инициализированы переменные в .env как в .env.example, с такими же названиями.
-
-Пример использования в header.php:
 ```php
-$vite = Vite::getInstance();
-$vite->includeAssets([
-	'src/common/js/bundle.js',
-]);
+Vite::getSsrContent('test')
 ```
 
-- ```Vite::includeAssets``` - принимает массив путей относительно корневой директории с package.json с vite
+## node js сервер
+
+файл с node js сервером располагается в local/js/vite/server.js
+
+страницы соответствуют ключам из build.rollupOptions.input (vite.config.server.js)
+
+на продакшен сервере этот сервер должен быть запущен, а порт сервера задается в файле .env
+
+для запуска сервера можно использовать пакет pm2 - https://www.npmjs.com/package/pm2
+
+так же запустить сервер можно командой ```npm run ssr-server``` в local/js/vite
+
+## Пример страницы с vue ssr
+
+```php
+use Itb\Core\Assets\Vite;
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+Vite::getInstance()->includeAssets([ // подключаем ассеты
+    'src/pages/test/entry-client.js',
+    'src/common/js/bundle.js'
+]);
+$content = Vite::getSsrContent('test'); // делаем запрос на node сервер за html текущей страницы, страница test - это ключ из build.rollupOptions.input
+echo "<div id='app'>{$content}</div>" ?? '<div id="app"></div>'; // если html вернулся то помещаем его в контейнер иначе создаем пустой контейнер
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+```
+
+
