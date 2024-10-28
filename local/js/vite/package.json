@@ -5,10 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.client.ts",
-    "build": "cross-env MODE=production npm run build:client && npm run build:server",
+    "build": "cross-env MODE=production vue-tsc && npm run build:client && npm run build:server",
     "build:client": "vite build --config vite.config.client.ts",
     "build:server": "vite build --config vite.config.server.ts",
-    "preview": "cross-env MODE=production node server",
     "ssr-server": "node server"
   },
   "dependencies": {
