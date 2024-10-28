@@ -4,8 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "cross-env MODE=production vite build"
+    "dev": "vite --config vite.config.client.ts",
+    "build": "cross-env MODE=production npm run build:client && npm run build:server",
+    "build:client": "vite build --config vite.config.client.ts",
+    "build:server": "vite build --config vite.config.server.ts",
+    "preview": "cross-env MODE=production node server",
+    "ssr-server": "node server"
   },
   "dependencies": {
     "@vueuse/core": "*",
@@ -13,7 +17,10 @@
     "axios": "*",
     "dotenv": "*",
     "vue": "*",
-    "vuex": "*"
+    "vuex": "*",
+    "compression": "*",
+    "express": "*",
+    "sirv": "*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "*",
@@ -21,6 +28,8 @@
     "unplugin-vue-macros": "*",
     "vite": "*",
     "vite-plugin-style-import": "*",
-    "cross-env": "*"
+    "cross-env": "*",
+    "typescript": "*",
+    "vue-tsc": "*"
   }
 }
