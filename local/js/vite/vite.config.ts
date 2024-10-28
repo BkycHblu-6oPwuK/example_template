@@ -14,7 +14,7 @@ if (result.error) {
 }
 
 const env = process.env;
-
+const base = env.MODE === 'production' ?  `/${env.VITE_BASE_PATH}/${env.VITE_CLIENT_PATH}` : `/${env.VITE_BASE_PATH}`;
 export default defineConfig({
     plugins: [
         VueMacros({
@@ -26,9 +26,9 @@ export default defineConfig({
     //define: {
     //    'process.env': env // можно передать переменные в клиентский код
     //},
-    base: env.VITE_BASE_PATH,
+    base: base,
     build: {
-        outDir: 'dist',
+        outDir: env.VITE_CLIENT_PATH,
         assetsDir: '.',
         copyPublicDir: false,
         manifest: true,
@@ -40,11 +40,6 @@ export default defineConfig({
                 footer: 'src/common/js/footer.ts',
                 app: 'src/app/index.ts'
             },
-            // output: { // названия без хешей, с использованием класса Itb\Assets\Vite можно забыть про названия файлов.
-            //     entryFileNames: `[name].js`,
-            //     chunkFileNames: `[name].js`,
-            //     assetFileNames: `[name].[ext]`
-            // },
         },
     },
     resolve: {
