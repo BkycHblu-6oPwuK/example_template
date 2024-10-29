@@ -2,10 +2,21 @@
 
 Когда делаете build на продакшен, убедитесь что занесли файл в build.rollupOptions.input в vite.config.client.js для клиентского кода и в vite.config.server.js для серверных страниц
 
-метод для получения html с node ssr ```getSsrContent```, параметром передается страница которая должа быть получена название страницы соответствует ключу из build.rollupOptions.input файла vite.config.server.js
+метод для получения html с node ssr ```getSsrContent```, параметром передается страница которая должа быть получена название страницы соответствует ключу из build.rollupOptions.input файла vite.config.server.js. Второй параметр - это данные для вашей vue страницы
 
 ```php
-Vite::getSsrContent('test')
+Vite::getSsrContent('test', []|null)
+```
+
+При разработке точки входа для приложения на ssr сервере в вашем файле должна экспортироваться функция ```render```, сервер первым параметром будет прокидывать переданные данные 
+
+```js
+export function render(data) {
+  const app = createApp(data)
+  const ctx = {}
+  const stream = renderToWebStream(app, ctx)
+  return { stream }
+}
 ```
 
 ## node js сервер
@@ -23,14 +34,24 @@ Vite::getSsrContent('test')
 ## Пример страницы с vue ssr
 
 ```php
+use Bitrix\Main\Web\Json;
 use Itb\Core\Assets\Vite;
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-Vite::getInstance()->includeAssets([ // подключаем ассеты
+$APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
+Vite::getInstance()->includeAssets([
     'src/pages/test/entry-client.js',
     'src/common/js/bundle.js'
 ]);
-$content = Vite::getSsrContent('test'); // делаем запрос на node сервер за html текущей страницы, страница test - это ключ из build.rollupOptions.input
-echo "<div id='app'>{$content}</div>" ?? '<div id="app"></div>'; // если html вернулся то помещаем его в контейнер иначе создаем пустой контейнер
+$data = ['msg' => 'текст для вывода1'];
+$content = Vite::getSsrContent('test', $data);
+echo "<div id='app'>{$content}</div>" ?? '<div id="app"></div>';
+?>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.vueApps.createTestPage(<?=Json::encode($data)?>).mount('#app')
+    })
+</script>
+<?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
 ```
 

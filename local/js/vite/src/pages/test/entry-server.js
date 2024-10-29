@@ -1,8 +1,8 @@
 import { renderToWebStream } from 'vue/server-renderer'
 import { createApp } from './main'
 
-export function render() {
-  const { app } = createApp()
+export function render(data) {
+  const app = createApp(data)
 
   // passing SSR context object which will be available via useSSRContext()
   // @vitejs/plugin-vue injects code into a component's setup() that registers

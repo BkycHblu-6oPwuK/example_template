@@ -7,6 +7,8 @@ dotenv.config({ path: path.resolve(path.dirname(new URL(import.meta.url).pathnam
 const port = process.env.VITE_SSR_PORT || 5174;
 const app = express();
 
+app.use(express.json());
+
 async function getRenderModule(page) {
   const serverEntry = path.resolve(`./dist/server/${page}.js`);
   try {
@@ -18,16 +20,17 @@ async function getRenderModule(page) {
   return render;
 }
 
-app.use('/:page', async (req, res) => {
+app.post('/:page', async (req, res) => {
   try {
-    const page = req.params.page;;
+    const page = req.params.page;
     const render = await getRenderModule(page);
     if (!render) {
-      res.status(404).send(`Cannot GET /${page}`);
+      res.status(404).send(`Cannot POST /${page}`);
       return;
     }
-    
-    const { stream } = render();
+
+    const requestData = req.body.data ?? null;
+    const { stream } = render(requestData);
     res.status(200).set({ 'Content-Type': 'text/html' });
 
     for await (const chunk of stream) {
