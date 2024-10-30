@@ -4,6 +4,10 @@
 
 метод для получения html с node ssr ```getSsrContent```, параметром передается страница которая должа быть получена название страницы соответствует ключу из build.rollupOptions.input файла vite.config.server.js. Второй параметр - это данные для вашей vue страницы
 
+Метод выполняет обычный http запрос с помощью curl на сервер c node.
+
+Вариант ssr с grpc - https://git.itb-dev.ru/ITB-dev/ssr_grpc
+
 ```php
 Vite::getSsrContent('test', []|null)
 ```
