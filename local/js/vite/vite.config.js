@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 
-// import vue from '@vitejs/plugin-vue';
-// import VueMacros from "unplugin-vue-macros/vite";
+import vue from '@vitejs/plugin-vue';
+import VueMacros from "unplugin-vue-macros/vite";
 
 import dotenv from 'dotenv';
 import path from 'path';
@@ -16,13 +16,13 @@ if (result.error) {
 const env = process.env;
 const base = env.MODE === 'production' ?  `/${env.VITE_BASE_PATH}/${env.VITE_CLIENT_PATH}` : `/${env.VITE_BASE_PATH}`;
 export default defineConfig({
-    // plugins: [
-    //     VueMacros({
-    //         plugins: {
-    //             vue: vue(),
-    //         },
-    //     }),
-    // ],
+    plugins: [
+        VueMacros({
+            plugins: {
+                vue: vue(),
+            },
+        }),
+    ],
     //define: {
     //    'process.env': env // можно передать переменные в клиентский код
     //},

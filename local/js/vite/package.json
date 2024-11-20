@@ -13,7 +13,7 @@
     "axios": "*",
     "dotenv": "*",
     "vue": "*",
-    "vuex": "*"
+    "pinia": "*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "*",

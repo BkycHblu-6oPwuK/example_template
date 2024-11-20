@@ -19,13 +19,10 @@ https://git.itb-dev.ru/ITB-dev/itb.core
 1. Выполнить composer install в корне проекта
 2. npm install в local/js/vite (VITE_BASE_PATH).
 
-По умолчанию в package.json в зависимостях указаны библиотеки - swiper, axios, vue, vuex, vueuse, sass, dotenv и плагины для vue.
+По умолчанию в package.json в зависимостях указаны библиотеки - swiper, axios, vue, pinia (хранилище вместо vuex), vueuse, sass, dotenv и плагины для vue.
 Дальше можете использовать их делая импорты в js файлах
 
 Так же в package.json необходимо заменить версии с '*' на те версии которые были установлены
-
-## Vue
-Для использования vue должен быть раскомментирован плагин vue в vite.config.js
 
 ## Разработка
 - Когда делаете build на продакшен, убедитесь что занесли файл в build.rollupOptions.input в vite.config.js, css туда не нужно вносить, его импортируйте в js файл.
