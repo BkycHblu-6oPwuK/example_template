@@ -14,7 +14,7 @@
     "dotenv": "*",
     "swiper": "*",
     "vue": "*",
-    "vuex": "*"
+    "pinia": "*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "*",
