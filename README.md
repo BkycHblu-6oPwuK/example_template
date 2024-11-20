@@ -6,8 +6,6 @@
 
 Метод выполняет обычный http запрос с помощью curl на сервер c node.
 
-Вариант ssr с grpc - https://git.itb-dev.ru/ITB-dev/ssr_grpc
-
 ```php
 Vite::getSsrContent('test', []|null)
 ```
