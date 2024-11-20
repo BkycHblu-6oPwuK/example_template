@@ -4,23 +4,30 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "cross-env MODE=production vite build"
+    "dev": "vite --config vite.config.client.js",
+    "build": "cross-env MODE=production npm run build:client && npm run build:server",
+    "build:client": "vite build --config vite.config.client.js",
+    "build:server": "vite build --config vite.config.server.js",
+    "ssr-server": "node server"
   },
   "dependencies": {
+    "@grpc/grpc-js": "*",
+    "@grpc/proto-loader": "*",
     "@vueuse/core": "*",
-    "swiper": "*",
     "axios": "*",
+    "compression": "*",
     "dotenv": "*",
+    "sirv": "*",
+    "swiper": "*",
     "vue": "*",
     "pinia": "*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "*",
+    "cross-env": "*",
     "sass": "*",
     "unplugin-vue-macros": "*",
     "vite": "*",
-    "vite-plugin-style-import": "*",
-    "cross-env": "*"
+    "vite-plugin-style-import": "*"
   }
 }

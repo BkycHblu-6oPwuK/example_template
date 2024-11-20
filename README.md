@@ -1,50 +1,56 @@
-сборка docker с node - https://github.com/BkycHblu-6oPwuK/compose
+# SSR с помощью grpc и в целом работа с grpc
 
-## Варианты сборки
+## Создание клиентских классов
 
-1. Текущая ветка - базовая сборка для js/scss без ssr, для работы vue раскомментировать соответствующие строки в vite.config.js
-2. ветка typescript_version - базовая сборка, но вместо js используется typescript, vue уже раскомментирован
-3. ветка ssr_version - базовая сборка для vue ssr
-4. ветка ssr_typescript_version - базовая сборка для vue ssr c typescript
+Модуль grpc должен быть установлен т.к. он предоставляет php классы необходимые для работы.
 
-выбирая 2, 3 или 4 вариант, с основной ветки нужно скопировать все файлы в проект. А local/js/vite заменить из соответствующей ветки.
+1. через apt get или какой-либо другой пакетный менеджен на сервере должны быть установлены пакеты - ``` protobuf-compiler ``` и ```protobuf-compiler-grpc```. 
+2. установить и активировать php расширения - ``` protobuf ``` и ``` grpc ```
+Пример установки в dockerfile: 
 
-## Базовые классы и класс Vite
+```dockerfile
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    protobuf-compiler \
+    protobuf-compiler-grpc \
+    && docker-php-ext-install pdo_mysql mysqli bcmath
 
-https://git.itb-dev.ru/ITB-dev/itb.core
-
-## Установка
-Перенести файлы в проект. Изменить название файла env.example на .env (файл лежит в директории local/php/interface/include)
-
-1. Выполнить composer install в корне проекта
-2. npm install в local/js/vite (VITE_BASE_PATH).
-
-По умолчанию в package.json в зависимостях указаны библиотеки - swiper, axios, vue, pinia (хранилище вместо vuex), vueuse, sass, dotenv и плагины для vue.
-Дальше можете использовать их делая импорты в js файлах
-
-Так же в package.json необходимо заменить версии с '*' на те версии которые были установлены
-
-## Разработка
-- Когда делаете build на продакшен, убедитесь что занесли файл в build.rollupOptions.input в vite.config.js, css туда не нужно вносить, его импортируйте в js файл.
-- Локально работаете с включенным сервером разработки - npm run dev
-- По умолчанию размещаем в local/js/vite. При необходимости можно изменить расположение, так же изменив путь в файле .env
-- VITE_BASE_PATH определяет путь до папки dist. Если используете докер, то соответствующие изменения пути нужно внести и там (определяем до директории с package.json)
-- в public можно размещать общие ассеты которые будуте подключать в php файлах, например картинку подключить из php файла - "div class="img" img src="/local/js/vite/public/images/11.png" /div". Но не обязательно хранить такие ассеты в директории public можете выносить куда угодно.
-- если работаете с ассетами в директории src, то там используется модульность, ассеты размещаете в директории assets и имортируете нужные ассеты в нужный файл. Например в main scss - background-image: url(@/assets/images/11.png);
-(не забывайте что импорт картинок так же работает и в js/vue файлах). И тоже самое с шрифтами и прочим.
-Эта картинка при билде на продакшен будет помещена в папку dist и сборщик сам установит нужный путь до файла в конечном css файле.
-
-## Класс Vite в php
-- Для удобного подключения js и css был разработан класс Itb\Core\Assets\Vite который подключит css и js файлы как в режиме разработки и на боевом сервере
-- Конструктор приватный, объект получаем через статический метод getInstance
-- для работы класса обязательно должны быть инициализированы переменные в .env как в .env.example, с такими же названиями.
-
-Пример использования в header.php:
-```php
-$vite = Vite::getInstance();
-$vite->includeAssets([
-	'src/common/js/bundle.js',
-]);
+RUN pecl install protobuf
+RUN pecl install grpc
+RUN docker-php-ext-enable grpc
+RUN docker-php-ext-enable protobuf
 ```
 
-- ```Vite::includeAssets``` - принимает массив путей относительно корневой директории с package.json с vite
+3. в php.ini включить расширение - ``` extension=protobuf.so ```
+4. В консоли можно проверить доступность плагина - ``` which grpc_php_plugin ``` эта команда должна вернуть путь к плагину, который нужно использовать в команде для генерации классов
+5. Для создания классов нужно создать файл .proto, пример можно увидеть в /local/ssr.proto
+6. Для создания классов перейти в local и выполнить команду:
+7. Установить пакеты из composer.json и настроить базовый autoload на lib.
+
+```bash
+protoc --php_out=./lib --grpc_out=./lib ./ssr.proto --plugin=protoc-gen-grpc={path/to/grpc_php_plugin}
+```
+
+в данном случае классы должны появиться в в директории local/lib. Но по умолчанию в репозитории я эти классы уже оставил.
+
+Пример использования созданных классов надодиться в local/lib/Itb/Ssr/SsrService.php
+
+## Пример создания сервера grpc
+
+Пример файла server.js для node можно найти в local/js/vite/server.js
+
+для его работы необходимо установить пакеты - ```@grpc/grpc-js``` и ```@grpc/proto-loader``` (в package.json все описано)
+
+## Общие настройки 
+ 
+- Необходимо создать файл .env в local/php_interface/include на основе файла .env.example
+- Установить модуль itb.core - https://git.itb-dev.ru/ITB-dev/itb.core
+
+## Получения html
+функция ```getContent``` принимает название страницы и массив данных.
+
+```php
+Itb\Ssr\SsrService::getContent('test', null|$data[])
+```
+
+Название страницы соответствует ключу из ```build.rollupOptions.input``` из ```vite.config.server```

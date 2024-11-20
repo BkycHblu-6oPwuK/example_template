@@ -5,7 +5,8 @@
     "bitrix-dir": "bitrix"
   },
   "require": {
-    "vlucas/phpdotenv": "*"
+    "vlucas/phpdotenv": "*",
+    "grpc/grpc": "*"
   },
   "config": {
     "allow-plugins": {

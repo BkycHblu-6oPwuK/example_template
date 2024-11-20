@@ -1,16 +1,14 @@
-import { defineConfig } from 'vite'
-
+import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import VueMacros from "unplugin-vue-macros/vite";
-
 import dotenv from 'dotenv';
 import path from 'path';
 
-const envPath = path.resolve(__dirname, '../../../local/php_interface/include/.env'); // путь до .env относительно текущей директории p.s. переменно MODE значение production в js файле установится автоматически после билда
+const envPath = path.resolve(__dirname, '../../../local/php_interface/include/.env');
 const result = dotenv.config({ path: envPath });
 
 if (result.error) {
-  throw result.error; // в контейнере node, в консоли, можно посмотреть сообщение об ошибке
+  throw result.error;
 }
 
 const env = process.env;
@@ -23,13 +21,15 @@ export default defineConfig({
             },
         }),
     ],
-    //define: {
-    //    'process.env': env // можно передать переменные в клиентский код
-    //},
     base: base,
+    resolve: {
+        alias: {
+            '@': '/src',
+        },
+    },
     build: {
         outDir: env.VITE_CLIENT_PATH,
-        assetsDir: '.',
+        assetsDir: '.', 
         copyPublicDir: false,
         manifest: true,
         rollupOptions: {
@@ -37,13 +37,9 @@ export default defineConfig({
                 bundle: 'src/common/js/bundle.js',
                 header: 'src/common/js/header.js',
                 main: 'src/common/js/main.js',
-                footer: 'src/common/js/footer.js'
+                footer: 'src/common/js/footer.js',
+                test: 'src/pages/test/entry-client.js'
             },
-        },
-    },
-    resolve: {
-        alias: {
-            '@': '/src',
         },
     },
     server: {

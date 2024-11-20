@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package Ssr;
+
+option php_namespace = "Itb\\Ssr\\Generated"; // Установка пространства имен для PHP
+
+// Описание gRPC-сервиса с одним методом RenderPage
+service SSRService {
+  rpc RenderPage (RenderRequest) returns (RenderResponse);
+}
+
+// Запрос для рендеринга страницы
+message RenderRequest {
+  string page = 1; // Название страницы для рендеринга
+  string data = 2; // JSON-данные для рендеринга (в виде строки)
+}
+
+// Ответ, содержащий HTML контент
+message RenderResponse {
+  string html = 1; // HTML контент в виде строки
+}
