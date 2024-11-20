@@ -23,12 +23,13 @@ RUN docker-php-ext-enable protobuf
 
 3. в php.ini включить расширение - ``` extension=protobuf.so ```
 4. В консоли можно проверить доступность плагина - ``` which grpc_php_plugin ``` эта команда должна вернуть путь к плагину, который нужно использовать в команде для генерации классов
-5. Для создания классов нужно создать файл .proto, пример можно увидеть в /local/ssr.proto
+5. Для создания классов нужно создать файл .proto, пример можно увидеть в /local/proto/ssr.proto
 6. Для создания классов перейти в local и выполнить команду:
 7. Установить пакеты из composer.json и настроить базовый autoload на lib.
+8. Сгенерировать классы с помощью команды, в примере команда выполняется в директории ```local```
 
 ```bash
-protoc --php_out=./lib --grpc_out=./lib ./ssr.proto --plugin=protoc-gen-grpc={path/to/grpc_php_plugin}
+protoc --php_out=./lib --grpc_out=./lib ./proto/ssr.proto --plugin=protoc-gen-grpc={path/to/grpc_php_plugin}
 ```
 
 в данном случае классы должны появиться в в директории local/lib. Но по умолчанию в репозитории я эти классы уже оставил.
