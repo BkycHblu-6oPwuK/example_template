@@ -42,12 +42,18 @@ protoc --php_out=./lib --grpc_out=./lib ./proto/ssr.proto --plugin=protoc-gen-gr
 
 для его работы необходимо установить пакеты - ```@grpc/grpc-js``` и ```@grpc/proto-loader``` (в package.json все описано)
 
+на продакшен сервере этот сервер должен быть запущен, а порт сервера задается в файле .env
+
+для запуска сервера можно использовать пакет pm2 - https://www.npmjs.com/package/pm2
+
+так же запустить сервер можно командой npm run ssr-server в local/js/vite
+
 ## Общие настройки 
  
 - Необходимо создать файл .env в local/php_interface/include на основе файла .env.example
 - Установить модуль itb.core - https://git.itb-dev.ru/ITB-dev/itb.core
 
-## Получения html
+## Получение html
 функция ```getContent``` принимает название страницы и массив данных.
 
 ```php
@@ -55,3 +61,31 @@ Itb\Ssr\SsrService::getContent('test', null|$data[])
 ```
 
 Название страницы соответствует ключу из ```build.rollupOptions.input``` из ```vite.config.server```
+
+## Пример страницы
+
+```php
+<?
+
+use Bitrix\Main\Web\Json;
+use Itb\Core\Assets\Vite;
+use Itb\Ssr\SsrService;
+
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+$APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
+Vite::getInstance()->includeAssets([
+    'src/pages/test/entry-client.js',
+    'src/common/js/main.js'
+]);
+$data = ['msg' => 'текст для вывода2'];
+$content = SsrService::getContent('test', $data);
+echo "<div id='app'>" . ($content ?? '') . "</div>";
+?>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.vueApps.createTestPage(<?=Json::encode($data)?>).mount('#app')
+    })
+</script>
+<?
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+```
