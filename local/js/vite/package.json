@@ -16,7 +16,7 @@
     "axios": "*",
     "dotenv": "*",
     "vue": "*",
-    "vuex": "*",
+    "pinia": "*",
     "compression": "*",
     "express": "*",
     "sirv": "*"
