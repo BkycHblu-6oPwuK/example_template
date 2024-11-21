@@ -10,11 +10,14 @@ use Itb\Ssr\Generated\SSRServiceClient;
 
 class SsrService
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public static function getContent(string $page, ?array $data = null): ?string
     {
         if(!Vite::ssrEnable() || !Vite::isProduction()) return null;
-        $host = getEnvVar('VITE_SSR_HOST');
-        $port = getEnvVar('VITE_SSR_PORT');
+        $host = Vite::getSsrHost();
+        $port = Vite::getSsrPort();
         $client = new SSRServiceClient("{$host}:{$port}", [
             'credentials' => ChannelCredentials::createInsecure()
         ]);
@@ -37,8 +40,8 @@ class SsrService
      */
     public static function ssrServerIsAvailable(int $timeout = 1000000): bool
     {
-        $host = getEnvVar('VITE_SSR_HOST');
-        $port = getEnvVar('VITE_SSR_PORT');
+        $host = Vite::getSsrHost();
+        $port = Vite::getSsrPort();
         
         $client = new SSRServiceClient("{$host}:{$port}", [
             'credentials' => ChannelCredentials::createInsecure()
