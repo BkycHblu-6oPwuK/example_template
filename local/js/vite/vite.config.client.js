@@ -40,6 +40,11 @@ export default defineConfig({
                 footer: 'src/common/js/footer.js',
                 test: 'src/pages/test/entry-client.js'
             },
+            output: {
+                entryFileNames: `[name].js`,
+                chunkFileNames: `[name].js`,
+                assetFileNames: `[name].[ext]`
+            }
         },
     },
     server: {
