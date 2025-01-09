@@ -40,11 +40,6 @@ export default defineConfig({
                 footer: 'src/common/js/footer.ts',
                 app: 'src/app/index.ts'
             },
-            output: {
-                entryFileNames: `[name].js`,
-                chunkFileNames: `[name].js`,
-                assetFileNames: `[name].[ext]`
-            }
         },
     },
     resolve: {
