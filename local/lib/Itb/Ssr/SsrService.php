@@ -4,7 +4,7 @@ namespace Itb\Ssr;
 
 use Bitrix\Main\Web\Json;
 use Grpc\ChannelCredentials;
-use Itb\Core\Assets\Vite;
+use Itb\Core\Config;
 use Itb\Ssr\Generated\RenderRequest;
 use Itb\Ssr\Generated\SSRServiceClient;
 
@@ -13,11 +13,11 @@ class SsrService
     /**
      * @throws InvalidArgumentException
      */
-    public static function getContent(string $page, ?array $data = null): ?string
+    public function getContent(string $page, ?array $data = null): ?string
     {
-        if(!Vite::ssrEnable() || !Vite::isProduction()) return null;
-        $host = Vite::getSsrHost();
-        $port = Vite::getSsrPort();
+        if(!Config::isEnableViteSsr() || !Config::isProduction()) return null;
+        $host = Config::getViteSsrHost();
+        $port = Config::getViteSsrPort();
         $client = new SSRServiceClient("{$host}:{$port}", [
             'credentials' => ChannelCredentials::createInsecure()
         ]);
@@ -38,10 +38,10 @@ class SsrService
     /**
      * @param int $timeout in microseconds
      */
-    public static function ssrServerIsAvailable(int $timeout = 1000000): bool
+    public function ssrServerIsAvailable(int $timeout = 1000000): bool
     {
-        $host = Vite::getSsrHost();
-        $port = Vite::getSsrPort();
+        $host = Config::getViteSsrHost();
+        $port = Config::getViteSsrPort();
         
         $client = new SSRServiceClient("{$host}:{$port}", [
             'credentials' => ChannelCredentials::createInsecure()
