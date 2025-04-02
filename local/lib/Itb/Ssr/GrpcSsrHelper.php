@@ -8,7 +8,7 @@ use Itb\Core\Config;
 use Itb\Ssr\Generated\RenderRequest;
 use Itb\Ssr\Generated\SSRServiceClient;
 
-class SsrService
+class GrpcSsrHelper
 {
     /**
      * @throws InvalidArgumentException

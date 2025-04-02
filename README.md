@@ -34,7 +34,7 @@ protoc --php_out=./lib --grpc_out=./lib ./proto/ssr.proto --plugin=protoc-gen-gr
 
 в данном случае классы должны появиться в в директории local/lib. Но по умолчанию в репозитории я эти классы уже оставил.
 
-Пример использования созданных классов надодиться в local/lib/Itb/Ssr/SsrService.php
+Пример использования созданных классов надодится в local/lib/Itb/Ssr/GrpcSsrHelper.php
 
 ## Пример создания сервера grpc
 
@@ -57,7 +57,7 @@ protoc --php_out=./lib --grpc_out=./lib ./proto/ssr.proto --plugin=protoc-gen-gr
 функция ```getContent``` принимает название страницы и массив данных.
 
 ```php
-Itb\Ssr\SsrService::getContent('test', null|$data[])
+Itb\Ssr\GrpcSsrHelper::getContent('test', null|$data[])
 ```
 
 Название страницы соответствует ключу из ```build.rollupOptions.input``` из ```vite.config.server```
@@ -69,7 +69,7 @@ Itb\Ssr\SsrService::getContent('test', null|$data[])
 
 use Bitrix\Main\Web\Json;
 use Itb\Core\Assets\Vite;
-use Itb\Ssr\SsrService;
+use Itb\Ssr\GrpcSsrHelper;
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
@@ -78,7 +78,7 @@ Vite::getInstance()->includeAssets([
     'src/common/js/main.js'
 ]);
 $data = ['msg' => 'текст для вывода2'];
-$content = SsrService::getContent('test', $data);
+$content = GrpcSsrHelper::getContent('test', $data);
 echo "<div id='app'>" . ($content ?? '') . "</div>";
 ?>
 <script>
