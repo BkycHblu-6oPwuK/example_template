@@ -2,12 +2,12 @@
 
 Когда делаете build на продакшен, убедитесь что занесли файл в build.rollupOptions.input в vite.config.client.js для клиентского кода и в vite.config.server.js для серверных страниц
 
-метод для получения html с node ssr ```getSsrContent```, параметром передается страница которая должа быть получена название страницы соответствует ключу из build.rollupOptions.input файла vite.config.server.js. Второй параметр - это данные для вашей vue страницы
+метод для получения html с node ssr ```Itb\Core\Helpers\Ssrhelper::getSsrContent```, параметром передается страница которая должа быть получена название страницы соответствует ключу из build.rollupOptions.input файла vite.config.server.js. Второй параметр - это данные для вашей vue страницы
 
 Метод выполняет обычный http запрос с помощью curl на сервер c node.
 
 ```php
-Vite::getSsrContent('test', []|null)
+Ssrhelper::getSsrContent('test', []|null)
 ```
 
 При разработке точки входа для приложения на ssr сервере в вашем файле должна экспортироваться функция ```render```, сервер первым параметром будет прокидывать переданные данные 
@@ -38,6 +38,7 @@ export function render(data) {
 ```php
 use Bitrix\Main\Web\Json;
 use Itb\Core\Assets\Vite;
+use Itb\Core\Helpers\Ssrhelper;
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
 Vite::getInstance()->includeAssets([
@@ -45,7 +46,7 @@ Vite::getInstance()->includeAssets([
     'src/common/js/bundle.js'
 ]);
 $data = ['msg' => 'текст для вывода1'];
-$content = Vite::getSsrContent('test', $data);
+$content = Ssrhelper::getSsrContent('test', $data);
 echo "<div id='app'>{$content}</div>" ?? '<div id="app"></div>';
 ?>
 <script>
